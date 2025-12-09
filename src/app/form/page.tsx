@@ -1,20 +1,7 @@
-"use client"
+"use client";
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import z from "zod"
+import { FormPage } from "../_components/step1";
 
-const formSchema = z.object({
-    firstName: z.string().min(3).max(35)
-})
-
-const FormPage = () => {
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
-        defaultValues: {
-            firstName: ""
-        }
-    })
-
-    
+export default function Page() {
+  return <FormPage />;
 }
