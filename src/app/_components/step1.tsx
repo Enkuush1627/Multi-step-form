@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -11,10 +11,10 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Image from "next/image";
 import { useForm } from "react-hook-form";
 import z from "zod";
 import { Header } from "./cardHeader";
+import { ChevronRight } from "lucide-react";
 
 const formSchema = z.object({
   firstName: z.string().min(3).max(35),
@@ -23,7 +23,7 @@ const formSchema = z.object({
 });
 type formSchemaType = z.infer<typeof formSchema>;
 
-export const FormPage = () => {
+export const FormPage1 = () => {
   const form = useForm<formSchemaType>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -48,7 +48,7 @@ export const FormPage = () => {
                 control={form.control}
                 name="firstName"
                 render={({ field }) => (
-                  <FormItem className="h-[68px] gap-2 mb-3 justify-center items-center">
+                  <FormItem className="h-fit gap-2 mb-3 justify-center items-center">
                     <FormLabel>
                       <div className="flex gap-1">
                         <p className="font-semibold text-sm text-[#334155]">
@@ -71,7 +71,7 @@ export const FormPage = () => {
                 control={form.control}
                 name="lastName"
                 render={({ field }) => (
-                  <FormItem className="h-[68px] gap-2 mb-3 justify-center items-center">
+                  <FormItem className="h-fit gap-2 mb-3 justify-center items-center">
                     <FormLabel>
                       <div className="flex gap-1">
                         <p className="font-semibold text-sm text-[#334155]">
@@ -94,7 +94,7 @@ export const FormPage = () => {
                 control={form.control}
                 name="userName"
                 render={({ field }) => (
-                  <FormItem className="h-[68px] gap-2 mb-3 justify-center items-center">
+                  <FormItem className="h-fit gap-2 mb-3 justify-center items-center">
                     <FormLabel>
                       <div className="flex gap-1">
                         <p className="font-semibold text-sm text-[#334155]">
@@ -117,7 +117,9 @@ export const FormPage = () => {
             </CardContent>
           </div>
           <div className="flex flex-col">
-            <Button type="submit">Continue 1/3</Button>
+            <Button type="submit">
+              Continue 1/3 <ChevronRight />
+            </Button>
           </div>
         </form>
       </Form>
