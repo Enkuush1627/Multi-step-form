@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -9,29 +9,25 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import z from "zod";
+import { ChevronLeft, ChevronRight, Image } from "lucide-react";
 import { Header } from "./cardHeader";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Input } from "@/components/ui/input";
 
 const formSchema = z.object({
-  Email: z.string().min(8).max(35).regex(/@/),
-  PhoneNumber: z.string().min(8).max(35),
-  Password: z.string().min(8).max(35),
-  ConfirmPassword: z.string().min(8).max(35),
+  DateOfBirth: z.string().min(1),
+  ProfileImage: z.file(),
 });
 type formSchemaType = z.infer<typeof formSchema>;
 
-export const FormPage2 = () => {
+export const FormPage3 = () => {
   const form = useForm<formSchemaType>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      Email: "",
-      PhoneNumber: "",
-      Password: "",
-      ConfirmPassword: "",
+      DateOfBirth: "",
+      ProfileImage: undefined,
     },
   });
 
@@ -48,66 +44,21 @@ export const FormPage2 = () => {
             <CardContent className="flex justify-between flex-col">
               <FormField
                 control={form.control}
-                name="Email"
+                name="DateOfBirth"
                 render={({ field }) => (
                   <FormItem className="h-fit gap-2 mb-3 justify-center items-center">
                     <FormLabel>
                       <div className="flex gap-1">
                         <p className="font-semibold text-sm text-[#334155]">
-                          Email
+                          Date of birth
                         </p>
                         <p className="font-semibold text-sm text-red-500">*</p>
                       </div>
                     </FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="Placeholder"
-                        {...field}
-                        className="w-[416px] h-11 font-normal text-[16px] text-[#8B8E95]"
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              ></FormField>
-              <FormField
-                control={form.control}
-                name="PhoneNumber"
-                render={({ field }) => (
-                  <FormItem className="h-fit gap-2 mb-3 justify-center items-center">
-                    <FormLabel>
-                      <div className="flex gap-1">
-                        <p className="font-semibold text-sm text-[#334155]">
-                          Phone number
-                        </p>
-                        <p className="font-semibold text-sm text-red-500">*</p>
-                      </div>
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="Placeholder"
-                        {...field}
-                        className="w-[416px] h-11 font-normal text-[16px] text-[#8B8E95]"
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              ></FormField>
-              <FormField
-                control={form.control}
-                name="Password"
-                render={({ field }) => (
-                  <FormItem className="h-fit gap-2 mb-3 justify-center items-center">
-                    <FormLabel>
-                      <div className="flex gap-1">
-                        <p className="font-semibold text-sm text-[#334155]">
-                          Password
-                        </p>
-                        <p className="font-semibold text-sm text-red-500">*</p>
-                      </div>
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="Placeholder"
+                        type="date"
+                        placeholder=""
                         {...field}
                         className="w-[416px] h-11 font-normal text-[16px] text-[#8B8E95]"
                       />
@@ -118,23 +69,29 @@ export const FormPage2 = () => {
               ></FormField>
               <FormField
                 control={form.control}
-                name="ConfirmPassword"
+                name="ProfileImage"
                 render={({ field }) => (
                   <FormItem className="h-fit gap-2 mb-3 justify-center items-center">
                     <FormLabel>
                       <div className="flex gap-1">
                         <p className="font-semibold text-sm text-[#334155]">
-                          Confirm password
+                          Profile image
                         </p>
                         <p className="font-semibold text-sm text-red-500">*</p>
                       </div>
                     </FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="Placeholder"
+                        placeholder="placeholder"
+                        type="file"
                         {...field}
-                        className="w-[416px] h-11 font-normal text-[16px] text-[#8B8E95]"
-                      />
+                        className="bg-[#7F7F800D] text-[#09090B] flex flex-col h-[180px] w-[416px] hover:bg-inherit"
+                      >
+                        <div className="bg-[#FFFFFF] h-7 w-7 flex justify-center items-center rounded-full">
+                          <Image size={12} />
+                        </div>
+                        Add Image
+                      </Input>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -147,7 +104,7 @@ export const FormPage2 = () => {
               <ChevronLeft /> Back
             </Button>
             <Button type="submit" className="w-[280px]">
-              Continue 2/3 <ChevronRight />
+              Continue 3/3 <ChevronRight />
             </Button>
           </div>
         </form>
