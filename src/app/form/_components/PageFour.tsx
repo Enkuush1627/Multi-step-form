@@ -1,19 +1,9 @@
 "use client";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import { Card, CardHeader } from "@/components/ui/card";
+import { Form } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import z from "zod";
-import { Header } from "./cardHeader";
 import Image from "next/image";
 
 const formSchema = z.object({
@@ -22,8 +12,7 @@ const formSchema = z.object({
   userName: z.string().min(3).max(35),
 });
 type formSchemaType = z.infer<typeof formSchema>;
-
-export const FormPage4 = () => {
+export const PageFour = () => {
   const form = useForm<formSchemaType>({
     resolver: zodResolver(formSchema),
     defaultValues: {

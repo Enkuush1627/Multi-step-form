@@ -15,22 +15,32 @@ import { useForm } from "react-hook-form";
 import z from "zod";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Header } from "./cardHeader";
+import { error } from "console";
 
 const formSchema = z.object({
-  Email: z
-    .email()
-    .min(8, "The Email has more than 8 letters.")
-    .max(35, "The Email has fewer than 35 letters."),
-  PhoneNumber: z.string().min(8, "The phone number has more than 8 letters."),
-  Password: z.string().min(8, "The password has more than 8 letters."),
+  Email: z.email("Please provide a valid email address."),
+  PhoneNumber: z
+    .string()
+    .regex(/^\+?\d{8}$/, "Please provide a valid email address."),
+  Password: z
+    .string()
+    .min(8, "The password has more than 8 letters.")
+    .max(35, "The password has fewer than 35 letters."),
   ConfirmPassword: z
     .string()
     .min(8, "The confirm password has more than 8 letters.")
     .max(35, "The confirm password has fewer than 35 letters."),
 });
+// .refine((data) => data.password === data.ConfirmPassword, {
+//   error:"Passwords do not match. Please try again."
+// })
 type formSchemaType = z.infer<typeof formSchema>;
+export type StepProps = {
+  handleNext: () => void;
+  handleBack: () => void;
+};
 
-export const FormPage2 = () => {
+export const PageTwo = ({ handleNext }: StepProps) => {
   const form = useForm<formSchemaType>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -42,6 +52,7 @@ export const FormPage2 = () => {
   });
 
   const onSumbit = (values: z.infer<typeof formSchema>) => {
+    handleNext();
     console.log(values);
   };
 

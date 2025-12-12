@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -18,20 +18,25 @@ import { Input } from "@/components/ui/input";
 
 const formSchema = z.object({
   DateOfBirth: z.string().min(1),
-  ProfileImage: z.file(),
+  ProfileImage: z.file().min(1),
 });
 type formSchemaType = z.infer<typeof formSchema>;
+export type StepProps = {
+  handleNext: () => void;
+  handleBack: () => void;
+};
 
-export const FormPage3 = () => {
+export const PageThree = ({ handleNext }: StepProps) => {
   const form = useForm<formSchemaType>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      DateOfBirth: "",
+      DateOfBirth: undefined,
       ProfileImage: undefined,
     },
   });
 
   const onSumbit = (values: z.infer<typeof formSchema>) => {
+    handleNext();
     console.log(values);
   };
 
@@ -82,16 +87,11 @@ export const FormPage3 = () => {
                     </FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="placeholder"
                         type="file"
+                        placeholder=""
                         {...field}
-                        className="bg-[#7F7F800D] text-[#09090B] flex flex-col h-[180px] w-[416px] hover:bg-inherit"
-                      >
-                        <div className="bg-[#FFFFFF] h-7 w-7 flex justify-center items-center rounded-full">
-                          <Image size={12} />
-                        </div>
-                        Add Image
-                      </Input>
+                        className="w-[416px] h-11 font-normal text-[16px] text-[#8B8E95]"
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

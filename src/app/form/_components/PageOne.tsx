@@ -15,6 +15,8 @@ import { useForm } from "react-hook-form";
 import z from "zod";
 import { ChevronRight } from "lucide-react";
 import { Header } from "./cardHeader";
+import { Data } from "../page";
+import { Dispatch, SetStateAction } from "react";
 
 const formSchema = z.object({
   firstName: z
@@ -31,18 +33,30 @@ const formSchema = z.object({
     .max(35, "The user name has fewer than 35 letters."),
 });
 type formSchemaType = z.infer<typeof formSchema>;
-
-export const FormPage1 = () => {
+export type StepProps = {
+  handleNext: () => void;
+  handleBack: () => void;
+  data: Data;
+  setData: Dispatch<SetStateAction<Data>>;
+};
+export const PageOne = ({ handleNext, data, setData }: StepProps) => {
   const form = useForm<formSchemaType>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      firstName: "",
-      lastName: "",
-      userName: "",
+      firstName: data.firstName,
+      lastName: data.lastName,
+      userName: data.userName,
     },
   });
 
   const onSumbit = (values: z.infer<typeof formSchema>) => {
+    setData((prev) => ({
+      ...prev,
+      firstName: values.firstName,
+      lastName: values.lastName,
+      userName: values.userName,
+    }));
+    handleNext();
     console.log(values);
   };
 
