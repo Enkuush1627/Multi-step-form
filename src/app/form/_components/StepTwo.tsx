@@ -14,44 +14,57 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import z from "zod";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { Header } from "./cardHeader";
+import { Header } from "./StepHeader";
 import { error } from "console";
+import { Data, StepContext } from "../page";
+import { Dispatch, SetStateAction, useContext } from "react";
 
-const formSchema = z.object({
-  Email: z.email("Please provide a valid email address."),
-  PhoneNumber: z
-    .string()
-    .regex(/^\+?\d{8}$/, "Please provide a valid email address."),
-  Password: z
-    .string()
-    .min(8, "The password has more than 8 letters.")
-    .max(35, "The password has fewer than 35 letters."),
-  ConfirmPassword: z
-    .string()
-    .min(8, "The confirm password has more than 8 letters.")
-    .max(35, "The confirm password has fewer than 35 letters."),
-});
-// .refine((data) => data.password === data.ConfirmPassword, {
-//   error:"Passwords do not match. Please try again."
-// })
+const formSchema = z
+  .object({
+    Email: z.email("Please provide a valid email address."),
+    PhoneNumber: z
+      .string()
+      .regex(/^\+?\d{8}$/, "Please provide a valid email address."),
+    Password: z
+      .string()
+      .min(8, "The password has more than 8 letters.")
+      .max(35, "The password has fewer than 35 letters."),
+    ConfirmPassword: z
+      .string()
+      .min(8, "The confirm password has more than 8 letters.")
+      .max(35, "The confirm password has fewer than 35 letters."),
+  })
+  .refine((data) => data.Password === data.ConfirmPassword, {
+    error: "Passwords do not match. Please try again.",
+  });
 type formSchemaType = z.infer<typeof formSchema>;
 export type StepProps = {
   handleNext: () => void;
   handleBack: () => void;
+  data: Data;
+  setData: Dispatch<SetStateAction<Data>>;
 };
 
-export const PageTwo = ({ handleNext }: StepProps) => {
+export const PageTwo = () => {
+  const { data, handleNext, handleBack, setData } = useContext(StepContext);
   const form = useForm<formSchemaType>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      Email: "",
-      PhoneNumber: "",
-      Password: "",
-      ConfirmPassword: "",
+      Email: data.Email,
+      PhoneNumber: data.PhoneNumber,
+      Password: data.Password,
+      ConfirmPassword: data.ConfirmPassword,
     },
   });
 
   const onSumbit = (values: z.infer<typeof formSchema>) => {
+    setData((prev) => ({
+      ...prev,
+      Email: values.Email,
+      PhoneNumber: values.PhoneNumber,
+      Password: values.Password,
+      ConfirmPassword: values.ConfirmPassword,
+    }));
     handleNext();
     console.log(values);
   };
@@ -69,12 +82,12 @@ export const PageTwo = ({ handleNext }: StepProps) => {
                 render={({ field }) => (
                   <FormItem className="h-fit gap-2 mb-3 justify-center items-center">
                     <FormLabel>
-                      <div className="flex gap-1">
-                        <p className="font-semibold text-sm text-[#334155]">
-                          Email
-                        </p>
-                        <p className="font-semibold text-sm text-red-500">*</p>
-                      </div>
+                      <p className="font-semibold text-sm text-[#334155]">
+                        Email
+                      </p>
+                      <span className="font-semibold text-sm text-red-500">
+                        *
+                      </span>
                     </FormLabel>
                     <FormControl>
                       <Input

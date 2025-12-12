@@ -1,17 +1,25 @@
 "use client";
 
-import React, { Dispatch, SetStateAction, useState } from "react";
-import { PageOne } from "./_components/PageOne";
-import { PageTwo } from "./_components/PageTwo";
-import { PageThree } from "./_components/PageThree";
-import { PageFour } from "./_components/PageFour";
+import React, {
+  createContext,
+  Dispatch,
+  SetStateAction,
+  useState,
+} from "react";
+import { PageFour } from "./_components/StepFour";
+import { PageOne } from "./_components/StepOne";
+import { PageTwo } from "./_components/StepTwo";
+import { PageThree } from "./_components/StepThree";
 type StepContextType = {
   step: number;
   handleNext: () => void;
   handleBack: () => void;
-  dataP: Data;
+  data: Data;
   setData: Dispatch<SetStateAction<Data>>;
 };
+
+export const StepContext = createContext<StepContextType>({} as StepContextType);
+
 export type Data = {
   firstName: string;
   lastName: string;
@@ -44,33 +52,16 @@ export const Form = () => {
     setStep((prev) => Math.max(prev - 1, 1));
   };
   return (
-    <div className="flex justify-center items-center w-screen h-screen">
-      {step === 1 && (
-        <PageOne
-          handleNext={handleNext}
-          handleBack={handleBack}
-          data={data}
-          setData={setData}
-        />
-      )}
-      {step === 2 && (
-        <PageTwo
-          handleNext={handleNext}
-          handleBack={handleBack}
-          data={data}
-          setData={setData}
-        />
-      )}
-      {step === 3 && (
-        <PageThree
-          handleNext={handleNext}
-          handleBack={handleBack}
-          data={data}
-          setData={setData}
-        />
-      )}
-      {step === 4 && <PageFour />}
-    </div>
+    <StepContext.Provider
+      value={{ step, handleNext, handleBack, data, setData }}
+    >
+      <div className="flex justify-center items-center w-screen h-screen">
+        {step === 1 && <PageOne />}
+        {step === 2 && <PageTwo />}
+        {step === 3 && <PageThree />}
+        {step === 4 && <PageFour />}
+      </div>
+    </StepContext.Provider>
   );
 };
 export default Form;

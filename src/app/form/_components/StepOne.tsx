@@ -14,9 +14,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import z from "zod";
 import { ChevronRight } from "lucide-react";
-import { Header } from "./cardHeader";
-import { Data } from "../page";
-import { Dispatch, SetStateAction } from "react";
+import { Header } from "./StepHeader";
+import { Data, StepContext } from "../page";
+import { Dispatch, SetStateAction, useContext } from "react";
 
 const formSchema = z.object({
   firstName: z
@@ -33,13 +33,8 @@ const formSchema = z.object({
     .max(35, "The user name has fewer than 35 letters."),
 });
 type formSchemaType = z.infer<typeof formSchema>;
-export type StepProps = {
-  handleNext: () => void;
-  handleBack: () => void;
-  data: Data;
-  setData: Dispatch<SetStateAction<Data>>;
-};
-export const PageOne = ({ handleNext, data, setData }: StepProps) => {
+export const PageOne = () => {
+  const { data, handleNext, setData } = useContext(StepContext);
   const form = useForm<formSchemaType>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -73,12 +68,12 @@ export const PageOne = ({ handleNext, data, setData }: StepProps) => {
                 render={({ field }) => (
                   <FormItem className="h-fit gap-2 mb-3 justify-center items-center">
                     <FormLabel>
-                      <div className="flex gap-1">
-                        <p className="font-semibold text-sm text-[#334155]">
-                          First name
-                        </p>
-                        <p className="font-semibold text-sm text-red-500">*</p>
-                      </div>
+                      <p className="font-semibold text-sm text-[#334155]">
+                        First name
+                      </p>
+                      <span className="font-semibold text-sm text-red-500">
+                        *
+                      </span>
                     </FormLabel>
                     <FormControl>
                       <Input
