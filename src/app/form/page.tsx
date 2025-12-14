@@ -18,7 +18,9 @@ type StepContextType = {
   setData: Dispatch<SetStateAction<Data>>;
 };
 
-export const StepContext = createContext<StepContextType>({} as StepContextType);
+export const StepContext = createContext<StepContextType>(
+  {} as StepContextType
+);
 
 export type Data = {
   firstName: string;
