@@ -35,13 +35,6 @@ const formSchema = z.object({
   ProfileImage: z.file("Image cannot be blank"),
 });
 type formSchemaType = z.infer<typeof formSchema>;
-export type StepProps = {
-  handleNext: () => void;
-  handleBack: () => void;
-  data: Data;
-  setData: Dispatch<SetStateAction<Data>>;
-};
-
 export const PageThree = () => {
   const { data, handleNext, handleBack, setData } = useContext(StepContext);
   const [open, setOpen] = useState(false);
@@ -59,8 +52,7 @@ export const PageThree = () => {
       DateOfBirth: values.DateOfBirth,
       ProfileImage: values.ProfileImage,
     }));
-
-    handleBack();
+    handleNext();
     console.log(values);
   };
 
@@ -174,10 +166,13 @@ export const PageThree = () => {
             </CardContent>
           </div>
           <div className="flex gap-2 w-[416px]">
-            <Button className="w-32 bg-[#FFFFFF] text-[#202124] border border-[#CBD5E1] hover:bg-gray-300">
+            <Button
+              onClick={handleBack}
+              className="w-32 bg-[#FFFFFF] text-[#202124] border border-[#CBD5E1] hover:bg-gray-300 cursor-pointer"
+            >
               <ChevronLeft /> Back
             </Button>
-            <Button type="submit" className="w-[280px]">
+            <Button type="submit" className="w-[280px] cursor-pointer">
               Continue 3/3 <ChevronRight />
             </Button>
           </div>

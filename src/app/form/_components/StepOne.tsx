@@ -34,7 +34,7 @@ const formSchema = z.object({
 });
 type formSchemaType = z.infer<typeof formSchema>;
 export const PageOne = () => {
-  const { data, handleNext, setData } = useContext(StepContext);
+  const { data, handleNext, handleBack, setData } = useContext(StepContext);
   const form = useForm<formSchemaType>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -136,8 +136,8 @@ export const PageOne = () => {
               ></FormField>
             </CardContent>
           </div>
-          <div className="flex flex-col">
-            <Button type="submit">
+          <div className="flex flex-col ">
+            <Button type="submit" className="cursor-pointer">
               Continue 1/3 <ChevronRight />
             </Button>
           </div>
