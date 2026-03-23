@@ -77,7 +77,7 @@ export const PageOne = () => {
                     </FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="Placeholder"
+                        placeholder="Enter your first name"
                         {...field}
                         className="w-[416px] h-11 font-normal text-[16px] text-[#8B8E95]"
                       />
@@ -101,7 +101,7 @@ export const PageOne = () => {
                     </FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="Placeholder"
+                        placeholder="Enter your last name"
                         {...field}
                         className="w-[416px] h-11 font-normal text-[16px] text-[#8B8E95]"
                       />
@@ -125,7 +125,7 @@ export const PageOne = () => {
                     </FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="Placeholder"
+                        placeholder="Enter your username"
                         {...field}
                         className="w-[416px] h-11 font-normal text-[16px] text-[#8B8E95]"
                       />

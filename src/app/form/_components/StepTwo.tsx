@@ -24,7 +24,7 @@ const formSchema = z
     Email: z.email("Please provide a valid email address."),
     PhoneNumber: z
       .string()
-      .regex(/^\+?\d{8}$/, "Please provide a valid email address."),
+      .regex(/^\+?\d{8}$/, "Please enter a valid phone number"),
     Password: z
       .string()
       .min(8, "The password has more than 8 letters.")
@@ -35,7 +35,8 @@ const formSchema = z
       .max(35, "The confirm password has fewer than 35 letters."),
   })
   .refine((data) => data.Password === data.ConfirmPassword, {
-    error: "Passwords do not match. Please try again.",
+    message: "Нууц үг таарахгүй байна",
+    path: ["ConfirmPassword"],
   });
 type formSchemaType = z.infer<typeof formSchema>;
 export const PageTwo = () => {
@@ -65,8 +66,11 @@ export const PageTwo = () => {
   return (
     <Card className="w-[480px] h-[655px] bg-[#FFFFFF] flex flex-col items-center">
       <Form {...form}>
-        <form className="space-y-44" onSubmit={form.handleSubmit(onSumbit)}>
-          <div className="w-[416px] h-[385px] gap-7">
+        <form
+          className="flex flex-col gap-6"
+          onSubmit={form.handleSubmit(onSumbit)}
+        >
+          <div className="w-[416px] h-fit gap-7">
             <Header />
             <CardContent className="flex justify-between flex-col">
               <FormField
@@ -84,7 +88,7 @@ export const PageTwo = () => {
                     </FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="Placeholder"
+                        placeholder="Enter your email address"
                         {...field}
                         className="w-[416px] h-11 font-normal text-[16px] text-[#8B8E95]"
                       />
@@ -108,7 +112,7 @@ export const PageTwo = () => {
                     </FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="Placeholder"
+                        placeholder="Enter your phone number"
                         {...field}
                         className="w-[416px] h-11 font-normal text-[16px] text-[#8B8E95]"
                       />
@@ -133,7 +137,7 @@ export const PageTwo = () => {
                     <FormControl>
                       <Input
                         type="password"
-                        placeholder="Placeholder"
+                        placeholder="Enter your password"
                         {...field}
                         className="w-[416px] h-11 font-normal text-[16px] text-[#8B8E95]"
                       />
@@ -158,7 +162,7 @@ export const PageTwo = () => {
                     <FormControl>
                       <Input
                         type="password"
-                        placeholder="Placeholder"
+                        placeholder="Confirm your password"
                         {...field}
                         className="w-[416px] h-11 font-normal text-[16px] text-[#8B8E95]"
                       />
