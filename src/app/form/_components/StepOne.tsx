@@ -15,26 +15,29 @@ import { useForm } from "react-hook-form";
 import z from "zod";
 import { ChevronRight } from "lucide-react";
 import { Header } from "./StepHeader";
-import { Data, StepContext } from "../page";
-import { Dispatch, SetStateAction, useContext } from "react";
+import { StepContext } from "../page";
+import { useContext } from "react";
 
 const formSchema = z.object({
   firstName: z
-    .string("First name cannot contain special characters or numbers.")
-    .min(3, "The first name has more than 3 letters.")
-    .max(35, "The first name has fewer than 35 letters."),
+    .string()
+    .min(3, "The first name must be at least 3 characters.")
+    .max(35, "The first name must be less than 35 characters."),
   lastName: z
-    .string("Last name cannot contain special characters or numbers.")
-    .min(1, "The last name has more than 1 letters.")
-    .max(35, "The last name has fewer than 35 letters."),
+    .string()
+    .min(1, "The last name must be at least 1 character.")
+    .max(35, "The last name must be less than 35 characters."),
   userName: z
-    .string("This username is already taken. Please choose another one.")
-    .min(3, "The user name has more than 3 letters.")
-    .max(35, "The user name has fewer than 35 letters."),
+    .string()
+    .min(3, "The user name must be at least 3 characters.")
+    .max(35, "The user name must be less than 35 characters."),
 });
+
 type formSchemaType = z.infer<typeof formSchema>;
+
 export const PageOne = () => {
-  const { data, handleNext, handleBack, setData } = useContext(StepContext);
+  const { data, handleNext, setData } = useContext(StepContext);
+
   const form = useForm<formSchemaType>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -44,100 +47,96 @@ export const PageOne = () => {
     },
   });
 
-  const onSumbit = (values: z.infer<typeof formSchema>) => {
+  const onSubmit = (values: formSchemaType) => {
     setData((prev) => ({
       ...prev,
-      firstName: values.firstName,
-      lastName: values.lastName,
-      userName: values.userName,
+      ...values,
     }));
     handleNext();
-    console.log(values);
   };
 
   return (
-    <Card className="w-[480px] h-[655px] bg-[#FFFFFF] flex flex-col items-center">
+    <Card className="w-full max-w-[480px] min-h-[655px] bg-white flex flex-col items-center py-6 px-4">
       <Form {...form}>
-        <form className="space-y-44" onSubmit={form.handleSubmit(onSumbit)}>
-          <div className="w-[416px] h-[385px] gap-7">
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="flex flex-col items-center w-full"
+        >
+          {/* CONTENT */}
+          <div className="w-full max-w-[416px]">
             <Header />
-            <CardContent className="flex justify-between flex-col">
+
+            <CardContent className="flex flex-col gap-4 mt-4 p-0">
               <FormField
                 control={form.control}
                 name="firstName"
                 render={({ field }) => (
-                  <FormItem className="h-fit gap-2 mb-3 justify-center items-center">
-                    <FormLabel>
-                      <p className="font-semibold text-sm text-[#334155]">
-                        First name
-                      </p>
-                      <span className="font-semibold text-sm text-red-500">
-                        *
-                      </span>
+                  <FormItem className="flex flex-col gap-1 w-full">
+                    <FormLabel className="text-sm font-semibold text-[#334155]">
+                      First name <span className="text-red-500">*</span>
                     </FormLabel>
+
                     <FormControl>
                       <Input
-                        placeholder="Enter your first name"
                         {...field}
-                        className="w-[416px] h-11 font-normal text-[16px] text-[#8B8E95]"
+                        placeholder="Enter your first name"
+                        className="w-full h-11"
                       />
                     </FormControl>
-                    <FormMessage />
+
+                    <FormMessage className="min-h-[18px] text-sm" />
                   </FormItem>
                 )}
-              ></FormField>
+              />
+
               <FormField
                 control={form.control}
                 name="lastName"
                 render={({ field }) => (
-                  <FormItem className="h-fit gap-2 mb-3 justify-center items-center">
-                    <FormLabel>
-                      <div className="flex gap-1">
-                        <p className="font-semibold text-sm text-[#334155]">
-                          Last name
-                        </p>
-                        <p className="font-semibold text-sm text-red-500">*</p>
-                      </div>
+                  <FormItem className="flex flex-col gap-1 w-full">
+                    <FormLabel className="text-sm font-semibold text-[#334155]">
+                      Last name <span className="text-red-500">*</span>
                     </FormLabel>
+
                     <FormControl>
                       <Input
-                        placeholder="Enter your last name"
                         {...field}
-                        className="w-[416px] h-11 font-normal text-[16px] text-[#8B8E95]"
+                        placeholder="Enter your last name"
+                        className="w-full h-11"
                       />
                     </FormControl>
-                    <FormMessage />
+
+                    <FormMessage className="min-h-[18px] text-sm" />
                   </FormItem>
                 )}
-              ></FormField>
+              />
+
               <FormField
                 control={form.control}
                 name="userName"
                 render={({ field }) => (
-                  <FormItem className="h-fit gap-2 mb-3 justify-center items-center">
-                    <FormLabel>
-                      <div className="flex gap-1">
-                        <p className="font-semibold text-sm text-[#334155]">
-                          Username
-                        </p>
-                        <p className="font-semibold text-sm text-red-500">*</p>
-                      </div>
+                  <FormItem className="flex flex-col gap-1 w-full">
+                    <FormLabel className="text-sm font-semibold text-[#334155]">
+                      Username <span className="text-red-500">*</span>
                     </FormLabel>
+
                     <FormControl>
                       <Input
-                        placeholder="Enter your username"
                         {...field}
-                        className="w-[416px] h-11 font-normal text-[16px] text-[#8B8E95]"
+                        placeholder="Enter your username"
+                        className="w-full h-11"
                       />
                     </FormControl>
-                    <FormMessage />
+
+                    <FormMessage className="min-h-[18px] text-sm" />
                   </FormItem>
                 )}
-              ></FormField>
+              />
             </CardContent>
           </div>
-          <div className="flex flex-col ">
-            <Button type="submit" className="cursor-pointer">
+
+          <div className="w-full max-w-[416px] mt-6">
+            <Button type="submit" className="w-full h-11">
               Continue 1/3 <ChevronRight />
             </Button>
           </div>

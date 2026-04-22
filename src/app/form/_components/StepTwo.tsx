@@ -15,32 +15,34 @@ import { useForm } from "react-hook-form";
 import z from "zod";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Header } from "./StepHeader";
-import { error } from "console";
-import { Data, StepContext } from "../page";
-import { Dispatch, SetStateAction, useContext } from "react";
+import { StepContext } from "../page";
+import { useContext } from "react";
 
 const formSchema = z
   .object({
-    Email: z.email("Please provide a valid email address."),
+    Email: z.string().email("Please provide a valid email address."),
     PhoneNumber: z
       .string()
       .regex(/^\+?\d{8}$/, "Please enter a valid phone number"),
     Password: z
       .string()
-      .min(8, "The password has more than 8 letters.")
-      .max(35, "The password has fewer than 35 letters."),
+      .min(8, "Password must be at least 8 characters.")
+      .max(35, "Password must be less than 35 characters."),
     ConfirmPassword: z
       .string()
-      .min(8, "The confirm password has more than 8 letters.")
-      .max(35, "The confirm password has fewer than 35 letters."),
+      .min(8, "Confirm password must be at least 8 characters.")
+      .max(35, "Confirm password must be less than 35 characters."),
   })
   .refine((data) => data.Password === data.ConfirmPassword, {
     message: "Нууц үг таарахгүй байна",
     path: ["ConfirmPassword"],
   });
+
 type formSchemaType = z.infer<typeof formSchema>;
+
 export const PageTwo = () => {
   const { data, handleNext, handleBack, setData } = useContext(StepContext);
+
   const form = useForm<formSchemaType>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -51,136 +53,128 @@ export const PageTwo = () => {
     },
   });
 
-  const onSumbit = (values: z.infer<typeof formSchema>) => {
+  const onSubmit = (values: formSchemaType) => {
     setData((prev) => ({
       ...prev,
-      Email: values.Email,
-      PhoneNumber: values.PhoneNumber,
-      Password: values.Password,
-      ConfirmPassword: values.ConfirmPassword,
+      ...values,
     }));
     handleNext();
-    console.log(values);
   };
 
   return (
-    <Card className="w-[480px] h-[655px] bg-[#FFFFFF] flex flex-col items-center">
+    <Card className="w-full max-w-[480px] min-h-[655px] bg-white flex flex-col items-center py-6 px-4">
       <Form {...form}>
         <form
-          className="flex flex-col gap-6"
-          onSubmit={form.handleSubmit(onSumbit)}
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="flex flex-col items-center w-full"
         >
-          <div className="w-[416px] h-fit gap-7">
+          {/* CONTENT */}
+          <div className="w-full max-w-[416px]">
             <Header />
-            <CardContent className="flex justify-between flex-col">
+
+            <CardContent className="flex flex-col gap-4 mt-4 p-0">
               <FormField
                 control={form.control}
                 name="Email"
                 render={({ field }) => (
-                  <FormItem className="h-fit gap-2 mb-3 justify-center items-center">
-                    <FormLabel>
-                      <p className="font-semibold text-sm text-[#334155]">
-                        Email
-                      </p>
-                      <span className="font-semibold text-sm text-red-500">
-                        *
-                      </span>
+                  <FormItem className="flex flex-col gap-1 w-full">
+                    <FormLabel className="text-sm font-semibold text-[#334155]">
+                      Email <span className="text-red-500">*</span>
                     </FormLabel>
+
                     <FormControl>
                       <Input
-                        placeholder="Enter your email address"
                         {...field}
-                        className="w-[416px] h-11 font-normal text-[16px] text-[#8B8E95]"
+                        placeholder="Enter your email address"
+                        className="w-full h-11"
                       />
                     </FormControl>
-                    <FormMessage />
+
+                    <FormMessage className="min-h-[18px]" />
                   </FormItem>
                 )}
-              ></FormField>
+              />
+
               <FormField
                 control={form.control}
                 name="PhoneNumber"
                 render={({ field }) => (
-                  <FormItem className="h-fit gap-2 mb-3 justify-center items-center">
-                    <FormLabel>
-                      <div className="flex gap-1">
-                        <p className="font-semibold text-sm text-[#334155]">
-                          Phone number
-                        </p>
-                        <p className="font-semibold text-sm text-red-500">*</p>
-                      </div>
+                  <FormItem className="flex flex-col gap-1 w-full">
+                    <FormLabel className="text-sm font-semibold text-[#334155]">
+                      Phone number <span className="text-red-500">*</span>
                     </FormLabel>
+
                     <FormControl>
                       <Input
-                        placeholder="Enter your phone number"
                         {...field}
-                        className="w-[416px] h-11 font-normal text-[16px] text-[#8B8E95]"
+                        placeholder="Enter your phone number"
+                        className="w-full h-11"
                       />
                     </FormControl>
-                    <FormMessage />
+
+                    <FormMessage className="min-h-[18px]" />
                   </FormItem>
                 )}
-              ></FormField>
+              />
+
               <FormField
                 control={form.control}
                 name="Password"
                 render={({ field }) => (
-                  <FormItem className="h-fit gap-2 mb-3 justify-center items-center">
-                    <FormLabel>
-                      <div className="flex gap-1">
-                        <p className="font-semibold text-sm text-[#334155]">
-                          Password
-                        </p>
-                        <p className="font-semibold text-sm text-red-500">*</p>
-                      </div>
+                  <FormItem className="flex flex-col gap-1 w-full">
+                    <FormLabel className="text-sm font-semibold text-[#334155]">
+                      Password <span className="text-red-500">*</span>
                     </FormLabel>
+
                     <FormControl>
                       <Input
                         type="password"
-                        placeholder="Enter your password"
                         {...field}
-                        className="w-[416px] h-11 font-normal text-[16px] text-[#8B8E95]"
+                        placeholder="Enter your password"
+                        className="w-full h-11"
                       />
                     </FormControl>
-                    <FormMessage />
+
+                    <FormMessage className="min-h-[18px]" />
                   </FormItem>
                 )}
-              ></FormField>
+              />
+
               <FormField
                 control={form.control}
                 name="ConfirmPassword"
                 render={({ field }) => (
-                  <FormItem className="h-fit gap-2 mb-3 justify-center items-center">
-                    <FormLabel>
-                      <div className="flex gap-1">
-                        <p className="font-semibold text-sm text-[#334155]">
-                          Confirm password
-                        </p>
-                        <p className="font-semibold text-sm text-red-500">*</p>
-                      </div>
+                  <FormItem className="flex flex-col gap-1 w-full">
+                    <FormLabel className="text-sm font-semibold text-[#334155]">
+                      Confirm password <span className="text-red-500">*</span>
                     </FormLabel>
+
                     <FormControl>
                       <Input
                         type="password"
-                        placeholder="Confirm your password"
                         {...field}
-                        className="w-[416px] h-11 font-normal text-[16px] text-[#8B8E95]"
+                        placeholder="Confirm your password"
+                        className="w-full h-11"
                       />
                     </FormControl>
-                    <FormMessage />
+
+                    <FormMessage className="min-h-[18px]" />
                   </FormItem>
                 )}
-              ></FormField>
+              />
             </CardContent>
           </div>
-          <div className="flex gap-2 w-[416px]">
+
+          <div className="w-full max-w-[416px] mt-6 flex gap-2">
             <Button
+              type="button"
               onClick={handleBack}
-              className="w-32 bg-[#FFFFFF] text-[#202124] border border-[#CBD5E1] hover:bg-gray-300 cursor-pointer"
+              className="w-1/3 bg-white text-[#202124] border border-[#CBD5E1] hover:bg-gray-100"
             >
               <ChevronLeft /> Back
             </Button>
-            <Button type="submit" className="w-[280px] cursor-pointer">
+
+            <Button type="submit" className="w-2/3">
               Continue 2/3 <ChevronRight />
             </Button>
           </div>
